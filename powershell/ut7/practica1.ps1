@@ -15,3 +15,19 @@ foreach ($departamento in $departamentos) {
 $nombregrupo = "Grupo_$nombredept"
 New-ADGroup -Name $nombregrupo -GroupScope Global -Path $OUdept -Description "Grupo global para $nombredept"
 }
+
+foreach ($empleado in $empleados) {
+    $nombre = $empleado.nombre
+    $apellido = $empleado.apellido
+    $departamento = $empleado.departamento
+    $login = "$($nombre.ToLower()).$($apellido.ToLower())"
+    $OUdept = "OU=$departamento,OU=Empresa,DC=santi,DC=local"
+
+    New-ADUser -Name "$nombre $apellido" `
+               -SamAccountName $login ` `
+               -AccountPassword (ConvertTo-SecureString "aso2021." -AsPlainText -Force) `
+               -Enabled $true `
+               -ChangePasswordAtLogon $true
+
+    Add-ADGroupMember -Identity $nombregrupo -Members $login
+}
