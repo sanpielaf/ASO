@@ -22,7 +22,8 @@ foreach ($empleado in $empleados) {
     $departamento = $empleado.departamento
     $login = "$($nombre.ToLower()).$($apellido.ToLower())"
     $OUdept = "OU=$departamento,OU=Empresa,DC=santi,DC=local"
-
+    $nombregrupo = "Grupo_$departamento"
+    
     New-ADUser -Name "$nombre $apellido" `
                -SamAccountName $login ` `
                -AccountPassword (ConvertTo-SecureString "aso2021." -AsPlainText -Force) `
