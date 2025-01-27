@@ -11,7 +11,7 @@ New-Item -Path "C:\carpetaASO" -ItemType Directory
 #compartir la carpeta aso.
 
 
-
+#RESPONDIDO EN LA TAREA DE TEORIA.
 
 #5. Cambia los permisos del recurso compartido para que los usuarios del
 #grupo profesores tengan acceso Total a la carpeta aso y los usuarios del
