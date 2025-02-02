@@ -1,4 +1,7 @@
 ﻿New-Item -Path "C:\Empresa" -ItemType Directory
+
+$departamentos = Import-csv "C:\Users\Administrador\Downloads\archivos\departamentos.csv" -Delimiter ";"
+
 foreach ($departamento in $departamentos) {
     New-Item -Path "C:\Empresa\$($departamento.departamento)" -ItemType Directory
 }
