@@ -1,0 +1,2 @@
+﻿Set-ADOrganizationalUnit -Identity "OU=IESELCAMINAS,DC=RECUSANTI,DC=LOCAL" -ProtectedFromAccidentalDeletion $false
+Remove-ADOrganizationalUnit -Identity "OU=IESELCAMINAS,DC=RECUSANTI,DC=LOCAL" -Recursive -Confirm:$False
