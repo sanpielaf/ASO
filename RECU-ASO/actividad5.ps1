@@ -84,11 +84,11 @@ $ace | Format-Table
 
 ###---------------SUBCARPETAS DE IESELCAMINAS_USERS--------------------------------------------------------------------
 
-#bucle para definir permisos de las carpetas (grupos) dentro de la carpeta raíz IESELCAMINAS
-foreach ($grupo in $grupos) {
+#bucle para definir permisos de las carpetas (alumno) dentro de la carpeta raíz IESELCAMINAS_USERS
+foreach ($alumno in $alumnos) {
 
-    #definimos los permisos NTFS de cada subcarpeta (grupo) de la carpeta raiz IESELCAMINAS
-    $acl = Get-Acl -Path C:\IESELCAMINAS\"$($grupo.nombre)"
+    #definimos los permisos NTFS de cada subcarpeta (alumno) de la carpeta raiz IESELCAMINAS_USERS
+    $acl = Get-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre)$($alumno.apellidos)"
 
     #Deshabilitamos la herencia y eliminamos todas las reglas de acceso
     $acl.SetAccessRuleProtection($true,$false)
@@ -108,4 +108,4 @@ foreach ($grupo in $grupos) {
     $ace | Format-Table
 }
 
-Set-ADUser -Identity "$($emp.nombre)$($emp.apellido)" -ScriptPath "carpetas.bat" -HomeDrive "Z:" -HomeDirectory "\\EMPRESA-DC1\Empresa_users$\$($emp.nombre)$($emp.apellido)"
+Set-ADUser -Identity "$($alumno.nombre)$($alumno.apellidos)" -ScriptPath "carpetas.bat" -HomeDrive "C:" -HomeDirectory "\\IESELCAMINAS_USERS$\$($alumno.nombre)$($alumno.apellidos)"
