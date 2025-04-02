@@ -61,11 +61,11 @@ foreach ($grupo in $grupos) {
 New-Item -Path C:\IESELCAMINAS_USERS -ItemType directory
 
 foreach($alumno in $alumnos){
-    New-Item -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre)$($alumno.apellidos)" -ItemType directory
+    New-Item -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ItemType directory
 }
 
-#compartimos la carpeta raíz (IESELCAMINAS_USERS)
-New-SmbShare -Name "IESELCAMINAS_USERS" -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre)$($alumno.apellidos)" -ChangeAccess 'Usuarios del Dominio'
+#compartimos la carpeta raíz (IESELCAMINAS_USERS)                                                           o se pone -FullAccess "Administradores"? 
+New-SmbShare -Name "IESELCAMINAS_USERS$" -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ChangeAccess 'Usuarios del Dominio'
 
 #definimos los permisos NTFS de la carpeta principal
 $acl = Get-Acl -Path C:\IESELCAMINAS_USERS
@@ -88,7 +88,7 @@ $ace | Format-Table
 foreach ($alumno in $alumnos) {
 
     #definimos los permisos NTFS de cada subcarpeta (alumno) de la carpeta raiz IESELCAMINAS_USERS
-    $acl = Get-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre)$($alumno.apellidos)"
+    $acl = Get-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)"
 
     #Deshabilitamos la herencia y eliminamos todas las reglas de acceso
     $acl.SetAccessRuleProtection($true,$false)
@@ -99,13 +99,13 @@ foreach ($alumno in $alumnos) {
     $acl.SetAccessRule($ace4)
 
     #Cada alumno podrá entrar en su  carpeta con permisos de control total y no podrá acceder a las carpetas del resto de alumnos.
-    $permisoX = "$($alumno.nombre)$($alumno.apellidos)",'FullControl','ContainerInherit,ObjectInherit','None','Allow'
+    $permisoX = "$($alumno.nombre).$($alumno.apellidos)",'FullControl','ContainerInherit,ObjectInherit','None','Allow'
     $ace5 = New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $permisoX
     $acl.SetAccessRule($ace5)
 
     #establecemos los permisos
-    $acl | Set-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre)$($alumno.apellidos)"
+    $acl | Set-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)"
     $ace | Format-Table
 }
 
-Set-ADUser -Identity "$($alumno.nombre)$($alumno.apellidos)" -ScriptPath "carpetas.bat" -HomeDrive "C:" -HomeDirectory "\\IESELCAMINAS_USERS$\$($alumno.nombre)$($alumno.apellidos)"
+Set-ADUser -Identity "$($alumno.nombre).$($alumno.apellidos)" -ScriptPath "carpetas.bat" -HomeDrive "H:" -HomeDirectory "\\IESELCAMINAS_USERS$\$($alumno.nombre).$($alumno.apellidos)"
