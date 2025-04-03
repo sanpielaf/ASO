@@ -65,7 +65,7 @@ foreach($alumno in $alumnos){
 }
 
 #compartimos la carpeta raíz (IESELCAMINAS_USERS)                                                           
-New-SmbShare -Name "IESELCAMINAS_USERS$" -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ChangeAccess 'Usuarios del Dominio' -FullAccess "Administradores"
+New-SmbShare -Name "IESELCAMINAS_USERS$" -Path C:\IESELCAMINAS_USERS -ChangeAccess 'Usuarios del Dominio' -FullAccess "Administradores"
 
 #definimos los permisos NTFS de la carpeta principal
 $acl = Get-Acl -Path C:\IESELCAMINAS_USERS
