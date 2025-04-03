@@ -1,17 +1,17 @@
 ﻿$alumnos = Import-Csv -Path "C:\Users\Administrador\Desktop\alumnos.csv"
 $grupos = Import-Csv -Path "C:\Users\Administrador\Desktop\grupos.csv"
 
-###-----CARPETA IESELCAMINAS------------------
+###-----CARPETA IESELCAMINAS---------------------------------------------------------------
 
 #creamos la carpeta raiz IESELCAMINAS con su estructura
-New-Item -Path C:\IESELCAMINAS -ItemType directory
+New-Item -Path C:\IESELCAMINAS -ItemType directory -Force
 
 foreach ($grupo in $grupos) {
-    New-Item -Path C:\IESELCAMINAS\"$($grupo.nombre)" -ItemType directory
+    New-Item -Path C:\IESELCAMINAS\"$($grupo.nombre)" -ItemType directory -Force
 }
 
 #compartimos la carpeta raíz (IESELCAMINAS)
-New-SmbShare -Name "IESELCAMINAS" -Path C:\IESELCAMINAS -ChangeAccess 'Usuarios del Dominio'
+New-SmbShare -Name "IESELCAMINAS" -Path C:\IESELCAMINAS -ChangeAccess 'Usuarios del Dominio' -FullAccess "Administradores"
 
 #definimos los permisos NTFS de la carpeta principal
 $acl = Get-Acl -Path C:\IESELCAMINAS
@@ -28,7 +28,7 @@ $acl.SetAccessRule($ace)
 $acl | Set-Acl -Path C:\IESELCAMINAS
 $ace | Format-Table 
 
-#----------SUBCARPETAS DE IESELCAMINAS-----------------------
+#----------SUBCARPETAS DE IESELCAMINAS-------------------------------------------------------------------
 
 #bucle para definir permisos de las carpetas (grupos) dentro de la carpeta raíz IESELCAMINAS
 foreach ($grupo in $grupos) {
@@ -53,15 +53,13 @@ foreach ($grupo in $grupos) {
     $acl | Set-Acl -Path C:\IESELCAMINAS\"$($grupo.nombre)"
     $ace | Format-Table
 }
-
-
 ###------------------CARPETA IESELCAMINAS_USERS------------------------------------------------------
 
 #creamos la carpeta raiz IESELCAMINAS_USERS con su estructura
-New-Item -Path C:\IESELCAMINAS_USERS -ItemType directory
+New-Item -Path C:\IESELCAMINAS_USERS -ItemType directory -Force 
 
 foreach($alumno in $alumnos){
-    New-Item -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ItemType directory
+    New-Item -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ItemType directory -Force   
 }
 
 #compartimos la carpeta raíz (IESELCAMINAS_USERS)                                                           
