@@ -64,8 +64,8 @@ foreach($alumno in $alumnos){
     New-Item -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ItemType directory
 }
 
-#compartimos la carpeta raíz (IESELCAMINAS_USERS)                                                           o se pone -FullAccess "Administradores"? 
-New-SmbShare -Name "IESELCAMINAS_USERS$" -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ChangeAccess 'Usuarios del Dominio'
+#compartimos la carpeta raíz (IESELCAMINAS_USERS)                                                           
+New-SmbShare -Name "IESELCAMINAS_USERS$" -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)" -ChangeAccess 'Usuarios del Dominio' -FullAccess "Administradores"
 
 #definimos los permisos NTFS de la carpeta principal
 $acl = Get-Acl -Path C:\IESELCAMINAS_USERS
@@ -107,5 +107,3 @@ foreach ($alumno in $alumnos) {
     $acl | Set-Acl -Path C:\IESELCAMINAS_USERS\"$($alumno.nombre).$($alumno.apellidos)"
     $ace | Format-Table
 }
-
-Set-ADUser -Identity "$($alumno.nombre).$($alumno.apellidos)" -ScriptPath "carpetas.bat" -HomeDrive "H:" -HomeDirectory "\\IESELCAMINAS_USERS$\$($alumno.nombre).$($alumno.apellidos)"
