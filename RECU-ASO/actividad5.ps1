@@ -24,6 +24,11 @@ $permisoS = 'Administradores', 'FullControl', 'ContainerInherit,ObjectInherit', 
 $ace = New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $permisoS
 $acl.SetAccessRule($ace)
 
+#Añadir al grupo "usuarios del dominio" permisos de lectura.
+$permisoP = 'Usuarios del dominio', 'Read', 'ContainerInherit,ObjectInherit', 'None', 'Allow'
+$ace = New-Object -TypeName System.Security.AccessControl.FileSystemAccessRule -ArgumentList $permisoP
+$acl.SetAccessRule($ace)
+
 #establecemos los permisos
 $acl | Set-Acl -Path C:\IESELCAMINAS
 $ace | Format-Table 
